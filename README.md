@@ -1,36 +1,34 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NUTVORA
 
-## Getting Started
+Premium NUTVORA storefront built with Next.js, Supabase Auth, and PostgreSQL-compatible SQL.
 
-First, run the development server:
+## Local development
 
 ```bash
+npm install
+copy .env.example .env.local
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000` to see the storefront.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Supabase setup
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Create a project at [supabase.com](https://supabase.com).
+2. Copy the project URL and anon key into `.env.local`.
+3. Run `supabase/schema.sql` in the Supabase SQL Editor.
+4. Enable Email and Google providers in Supabase Authentication.
+5. Add `http://localhost:3000/auth/callback` to Supabase redirect URLs.
 
-## Learn More
+For Google, create OAuth credentials in Google Cloud and use the callback URL shown in Supabase Authentication provider settings.
 
-To learn more about Next.js, take a look at the following resources:
+## Vercel deployment
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Add `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` to the Vercel project, then add `https://your-domain.vercel.app/auth/callback` to Supabase redirect URLs. The SQL schema works with Supabase PostgreSQL and a local PostgreSQL-compatible database.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Checks
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run lint
+npm run build
+```

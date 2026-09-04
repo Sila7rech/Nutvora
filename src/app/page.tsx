@@ -1,69 +1,18 @@
+"use client";
+
 import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight, ChevronRight, Sparkles } from "lucide-react";
+import { Header, ProductCard } from "@/components/store";
+import { products } from "@/lib/catalog";
+
+const collections = [
+  { title: "Fruits Secs", description: "Noix, amandes, cajou et plus", image: "/Standard-100g.png", number: "01", href: "/shop?category=Fruits%20secs" },
+  { title: "Fruits Séchés", description: "Ananas, kiwi, mangue et plus", image: "/Grab&Go-50g.png", number: "02", href: "/shop?category=Fruits%20séchés" },
+  { title: "Nos Mix", description: "Des mélanges gourmands et équilibrés", image: "/Family-Premium-200g.png", number: "03", href: "/shop?category=Mix" },
+  { title: "Coffrets", description: "Des attentions qui ont du goût", image: "/logo-brand.png", number: "04", href: "/shop?category=Coffrets" },
+];
 
 export default function Home() {
-  return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+  return <main><Header /><section className="hero" id="top"><div className="hero-copy"><p className="eyebrow">NUTS · DRIED FRUITS · FRESH DRINKS</p><h1>Snack Better.<br /><em>Feel Better.</em></h1><p className="hero-description">Des fruits secs, fruits séchés et boissons naturelles soigneusement sélectionnés pour accompagner votre quotidien.</p><div className="hero-actions"><Link className="button button-dark" href="/shop">Découvrir nos produits <ArrowRight size={16} /></Link><Link className="text-link" href="/shop?category=Coffrets">Nos coffrets cadeaux <ChevronRight size={15} /></Link></div><div className="hero-benefits"><span><Sparkles size={16} /> Qualité premium</span><span>◌ 100% naturel</span><span>↗ Riche en nutriments</span></div></div><div className="hero-visual"><div className="sun-disc" /><Image src="/Family-Premium-200g.png" alt="Sachet Family Premium NUTVORA" width={680} height={680} priority /><div className="visual-caption"><span>01 / 04</span><span>Family / Premium · 200G</span></div></div></section><section className="marquee"><span>QUALITÉ QUI SE GOÛTE</span><i>✦</i><span>ÉNERGIE QUI SE PARTAGE</span><i>✦</i><span>QUALITÉ QUI SE GOÛTE</span></section><section className="section collections" id="collections"><div className="section-heading"><div><p className="eyebrow">L’univers NUTVORA</p><h2>Nos Collections</h2></div><Link className="text-link" href="/shop">Voir toute la boutique <ArrowRight size={15} /></Link></div><div className="collection-grid">{collections.map((collection) => <Link className="collection-card" href={collection.href} key={collection.title}><span className="card-number">{collection.number}</span><Image src={collection.image} alt={collection.title} width={320} height={300} /><div><h3>{collection.title}</h3><p>{collection.description}</p><span className="discover">Découvrir <ArrowRight size={15} /></span></div></Link>)}</div></section><section className="section products-section" id="products"><div className="section-heading"><div><p className="eyebrow">Les favoris de la communauté</p><h2>Meilleures ventes</h2></div><Link className="text-link" href="/shop">Explorer la sélection <ArrowRight size={15} /></Link></div><div className="product-grid">{products.map((product) => <ProductCard product={product} key={product.id} />)}</div></section><section className="mix-banner"><div><p className="eyebrow">Votre recette, votre énergie</p><h2>Composez votre<br /><em>propre Mix.</em></h2><p>Choisissez vos ingrédients préférés et créez une composition qui vous ressemble.</p><Link className="button button-gold" href="/shop">Créer mon Mix <ArrowRight size={16} /></Link></div><div className="mix-orbit"><Image src="/Grab&Go-50g.png" alt="Mix personnalisé NUTVORA" width={400} height={400} /></div></section><section className="trust" id="about"><div><span>01</span><strong>Livraison rapide</strong><p>Partout en Tunisie</p></div><div><span>02</span><strong>Paiement sécurisé</strong><p>À la livraison ou en ligne</p></div><div><span>03</span><strong>Emballage soigné</strong><p>Chaque commande compte</p></div><div><span>04</span><strong>Satisfaction garantie</strong><p>Un service à votre écoute</p></div></section><footer><div className="footer-top"><div><Link className="wordmark footer-logo" href="/">NUTVORA<span>®</span></Link><p>Nuts · Dried Fruits · Fresh Drinks</p><p className="footer-note">Snack better. Feel better.</p></div><div><h4>Boutique</h4><Link href="/shop?category=Fruits%20secs">Fruits Secs</Link><Link href="/shop?category=Fruits%20séchés">Fruits Séchés</Link><Link href="/shop?category=Mix">Nos Mix</Link><Link href="/shop?category=Coffrets">Coffrets</Link></div><div><h4>Informations</h4><Link href="/#about">À propos</Link><Link href="/checkout">Livraison</Link><Link href="/checkout">FAQ</Link><Link href="/#top">Contact</Link></div><div className="newsletter"><h4>Le mot du jour</h4><p>Recevez nos nouveautés et offres exclusives.</p><div><input type="email" placeholder="Votre adresse email" aria-label="Votre adresse email" /><button aria-label="S'inscrire"><ArrowRight size={17} /></button></div></div></div><div className="footer-bottom"><span>© 2026 NUTVORA. Tous droits réservés.</span><span>Instagram · Facebook · TikTok</span></div></footer></main>;
 }
