@@ -71,3 +71,5 @@ alter table public.orders enable row level security;
 alter table public.order_items enable row level security;
 create policy "Users can view their own orders" on public.orders for select using (auth.uid() = user_id);
 create policy "Users can view their own order items" on public.order_items for select using (exists (select 1 from public.orders where orders.id = order_items.order_id and orders.user_id = auth.uid()));
+
+notify pgrst, 'reload schema';
