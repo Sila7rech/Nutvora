@@ -14,6 +14,8 @@ alter table public.profiles add column if not exists address text;
 alter table public.profiles add column if not exists avatar_url text;
 
 alter table public.profiles enable row level security;
+drop policy if exists "Users can view their own profile" on public.profiles;
+drop policy if exists "Users can update their own profile" on public.profiles;
 create policy "Users can view their own profile" on public.profiles for select using (auth.uid() = id);
 create policy "Users can update their own profile" on public.profiles for update using (auth.uid() = id);
 
@@ -39,6 +41,9 @@ insert into storage.buckets (id, name, public)
 values ('avatars', 'avatars', true)
 on conflict (id) do update set public = true;
 
+drop policy if exists "Users can upload their own avatar" on storage.objects;
+drop policy if exists "Users can update their own avatar" on storage.objects;
+drop policy if exists "Anyone can view avatars" on storage.objects;
 create policy "Users can upload their own avatar" on storage.objects for insert to authenticated with check (bucket_id = 'avatars' and (storage.foldername(name))[1] = auth.uid()::text);
 create policy "Users can update their own avatar" on storage.objects for update to authenticated using (bucket_id = 'avatars' and (storage.foldername(name))[1] = auth.uid()::text);
 create policy "Anyone can view avatars" on storage.objects for select using (bucket_id = 'avatars');

@@ -28,7 +28,7 @@ export default function ProfilePage() {
       if (!user) { router.push("/login"); return; }
       setUserId(user.id);
       const { data, error: profileError } = await supabase.from("profiles").select("full_name, email, phone, address, avatar_url").eq("id", user.id).maybeSingle();
-      if (profileError) setError(profileError.message);
+      if (profileError) setError(profileError.code === "PGRST205" ? "La table profiles n'est pas encore créée dans Supabase. Exécutez supabase/schema.sql dans le SQL Editor, puis rechargez cette page." : profileError.message);
       setProfile({ ...emptyProfile, email: user.email ?? "", full_name: user.user_metadata?.full_name ?? "", ...data });
       setLoading(false);
     }
