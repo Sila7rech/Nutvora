@@ -35,7 +35,7 @@ export async function POST(request: Request) {
     const gmailUser = process.env.GMAIL_USER;
     const gmailPassword = process.env.GMAIL_APP_PASSWORD;
     if (!gmailUser || !gmailPassword) return NextResponse.json({ orderId: order.id, warning: "Commande enregistrée. Configurez GMAIL_USER et GMAIL_APP_PASSWORD pour recevoir l'email." });
-    const transporter = nodemailer.createTransport({ service: "gmail", auth: { user: gmailUser, pass: gmailPassword } });
+    const transporter = nodemailer.createTransport({ service: "gmail", auth: { user: gmailUser, pass: gmailPassword.replace(/\s/g, "") } });
     try {
       await transporter.sendMail({ from: `NUTVORA <${gmailUser}>`, to: "saberbradaiset23@gmail.com", replyTo: customer.email, subject: `Nouvelle commande NUTVORA · ${order.id.slice(0, 8)}`, html: `<div style="font-family:Arial,sans-serif;max-width:650px;margin:auto;color:#171714"><h1>Nouvelle commande NUTVORA</h1><p><strong>Commande :</strong> ${order.id}</p><h2>Client</h2><p>${customer.firstName} ${customer.lastName}<br>${customer.email}<br>${customer.phone}<br>${customer.address}, ${customer.postalCode} ${customer.city}, Tunisie</p><h2>Articles</h2><table style="width:100%;border-collapse:collapse"><thead><tr><th style="text-align:left">Produit</th><th>Quantité</th><th style="text-align:right">Prix</th></tr></thead><tbody>${orderRows}</tbody></table><p style="font-size:18px;text-align:right"><strong>Total : ${formatPrice(total)}</strong></p></div>` });
     } catch (emailError) {
