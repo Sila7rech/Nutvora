@@ -24,7 +24,11 @@ For Google, create OAuth credentials in Google Cloud and use the callback URL sh
 
 ## Vercel deployment
 
-Add `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` to the Vercel project, then add `https://your-domain.vercel.app/auth/callback` to Supabase redirect URLs. The SQL schema works with Supabase PostgreSQL and a local PostgreSQL-compatible database.
+Add `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `RESEND_API_KEY`, and `RESEND_FROM_EMAIL` to the Vercel project, then add `https://your-domain.vercel.app/auth/callback` to Supabase redirect URLs. Never expose the service role key with a `NEXT_PUBLIC_` prefix. The SQL schema works with Supabase PostgreSQL and a local PostgreSQL-compatible database.
+
+## Orders and email
+
+The checkout posts to `/api/orders`. The server recalculates prices from the catalog, saves the order and line items in Supabase, and emails `saberbradaiset23@gmail.com` using Resend. Create a Resend API key at [resend.com](https://resend.com), verify a sending domain, then set `RESEND_FROM_EMAIL` to an address on that domain. For initial testing, Resend's `onboarding@resend.dev` sender can only send to the email address used by the Resend account.
 
 ## Checks
 
