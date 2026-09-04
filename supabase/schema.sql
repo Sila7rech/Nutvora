@@ -3,8 +3,15 @@ create table if not exists public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
   full_name text,
   email text,
+  phone text,
+  address text,
+  avatar_url text,
   created_at timestamptz not null default now()
 );
+
+alter table public.profiles add column if not exists phone text;
+alter table public.profiles add column if not exists address text;
+alter table public.profiles add column if not exists avatar_url text;
 
 alter table public.profiles enable row level security;
 create policy "Users can view their own profile" on public.profiles for select using (auth.uid() = id);
@@ -27,6 +34,14 @@ drop trigger if exists on_auth_user_created on auth.users;
 create trigger on_auth_user_created
 after insert on auth.users
 for each row execute procedure public.handle_new_user();
+
+insert into storage.buckets (id, name, public)
+values ('avatars', 'avatars', true)
+on conflict (id) do update set public = true;
+
+create policy "Users can upload their own avatar" on storage.objects for insert to authenticated with check (bucket_id = 'avatars' and (storage.foldername(name))[1] = auth.uid()::text);
+create policy "Users can update their own avatar" on storage.objects for update to authenticated using (bucket_id = 'avatars' and (storage.foldername(name))[1] = auth.uid()::text);
+create policy "Anyone can view avatars" on storage.objects for select using (bucket_id = 'avatars');
 
 create table if not exists public.orders (
   id uuid primary key default gen_random_uuid(),
