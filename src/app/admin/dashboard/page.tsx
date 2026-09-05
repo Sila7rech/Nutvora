@@ -1,2 +1,2 @@
-import { DashboardView } from "@/components/admin-views";
-export default function AdminDashboardPage() { return <DashboardView />; }
+import { LiveDashboardView } from "@/components/admin-dashboard-live";
+export default function AdminDashboardPage() { return <LiveDashboardView />; }
