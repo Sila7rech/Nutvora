@@ -1,2 +1,2 @@
-import { CustomersView } from "@/components/admin-views";
-export default function AdminCustomersPage() { return <CustomersView />; }
+import { LiveCustomersView } from "@/components/admin-customers-live";
+export default function AdminCustomersPage() { return <LiveCustomersView />; }

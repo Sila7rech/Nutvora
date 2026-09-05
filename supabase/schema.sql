@@ -69,6 +69,54 @@ create table if not exists public.order_items (
   unit_price numeric(10, 2) not null check (unit_price >= 0)
 );
 
+-- Store catalog used by the admin back office.
+create table if not exists public.categories (
+  id uuid primary key default gen_random_uuid(),
+  name text not null unique,
+  slug text not null unique,
+  image_url text,
+  sort_order integer not null default 0,
+  created_at timestamptz not null default now()
+);
+
+create table if not exists public.products (
+  id uuid primary key default gen_random_uuid(),
+  category_id uuid not null references public.categories(id) on delete restrict,
+  name text not null,
+  slug text not null unique,
+  description text,
+  short_description text,
+  sku text not null unique,
+  barcode text,
+  price numeric(10, 2) not null check (price >= 0),
+  compare_at_price numeric(10, 2) check (compare_at_price is null or compare_at_price >= 0),
+  cost_price numeric(10, 2) check (cost_price is null or cost_price >= 0),
+  stock integer not null default 0 check (stock >= 0),
+  reserved_stock integer not null default 0 check (reserved_stock >= 0),
+  low_stock_threshold integer not null default 10 check (low_stock_threshold >= 0),
+  weight_grams integer,
+  image_url text,
+  status text not null default 'active' check (status in ('active', 'draft', 'archived')),
+  featured boolean not null default false,
+  best_seller boolean not null default false,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+insert into public.categories (name, slug) values
+  ('Fruits secs', 'fruits-secs'),
+  ('Fruits séchés', 'fruits-seches'),
+  ('Mixes', 'mixes'),
+  ('Drinks', 'drinks'),
+  ('Gift Boxes', 'gift-boxes'),
+  ('Custom Mixes', 'custom-mixes')
+on conflict (slug) do nothing;
+
+-- Existing storefront orders use lowercase statuses; admin actions use the
+-- normalized uppercase workflow while preserving the same column.
+alter table public.orders drop constraint if exists orders_status_check;
+alter table public.orders add constraint orders_status_check check (status in ('pending', 'confirmed', 'shipped', 'delivered', 'cancelled', 'NEW', 'CONFIRMED', 'PREPARING', 'READY', 'OUT_FOR_DELIVERY', 'DELIVERED', 'CANCELLED', 'RETURNED'));
+
 alter table public.orders enable row level security;
 alter table public.order_items enable row level security;
 drop policy if exists "Users can view their own orders" on public.orders;
