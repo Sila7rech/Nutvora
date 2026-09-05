@@ -1,17 +1,19 @@
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { requireAdmin } from "@/lib/supabase/admin";
 import { AdminShell } from "@/components/admin-shell";
+import { requireAdmin } from "@/lib/supabase/admin";
 
 export default async function AdminLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  let userEmail: string | undefined;
+  const requestHeaders = await headers();
+  if (requestHeaders.get("x-admin-public-route") === "true") return <>{children}</>;
+  let adminEmail: string | undefined;
   try {
     const { context } = await requireAdmin();
-    userEmail = context.email;
+    adminEmail = context.email;
   } catch (error) {
     const message = error instanceof Error ? error.message : "";
-    if (message === "UNAUTHORIZED") redirect("/admin/login");
     if (message === "FORBIDDEN") redirect("/admin/login?error=not-admin");
-    redirect("/admin/login?error=configuration");
+    redirect("/admin/login");
   }
-  return <AdminShell userEmail={userEmail ?? "admin"}>{children}</AdminShell>;
+  return <AdminShell userEmail={adminEmail ?? "admin"}>{children}</AdminShell>;
 }
