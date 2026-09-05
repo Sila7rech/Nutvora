@@ -189,3 +189,7 @@ alter table public.order_status_history enable row level security;
 alter table public.inventory_movements enable row level security;
 alter table public.admin_notifications enable row level security;
 alter table public.audit_logs enable row level security;
+
+drop policy if exists "Users can view their own order status history" on public.order_status_history;
+create policy "Users can view their own order status history" on public.order_status_history
+for select using (exists (select 1 from public.orders where orders.id = order_status_history.order_id and orders.user_id = auth.uid()));

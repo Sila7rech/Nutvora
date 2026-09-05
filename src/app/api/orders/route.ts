@@ -29,8 +29,9 @@ export async function POST(request: Request) {
     const accessToken = request.headers.get("authorization")?.replace("Bearer ", "").trim();
     const { data: { user } } = accessToken ? await supabase.auth.getUser(accessToken) : { data: { user: null } };
     const shippingAddress = { firstName: customer.firstName, lastName: customer.lastName, phone: customer.phone, address: customer.address, postalCode: customer.postalCode, city: customer.city, country: "Tunisie" };
-    const { data: order, error: orderError } = await supabase.from("orders").insert({ user_id: user?.id ?? null, email: customer.email, total, shipping_address: shippingAddress }).select("id").single();
+    const { data: order, error: orderError } = await supabase.from("orders").insert({ user_id: user?.id ?? null, email: customer.email, total, status: "NEW", shipping_address: shippingAddress }).select("id").single();
     if (orderError || !order) throw new Error(orderError?.message || "Impossible d'enregistrer la commande.");
+    await supabase.from("order_status_history").insert({ order_id: order.id, status: "NEW", note: "Order placed" });
     const { error: itemsError } = await supabase.from("order_items").insert(lines.map((line) => ({ order_id: order.id, product_id: line.product!.id, product_name: `${line.product!.name} · ${line.product!.format}`, quantity: line.quantity, unit_price: line.product!.price * (discount ? 0.7 : 1) })));
     if (itemsError) throw new Error(itemsError.message);
 

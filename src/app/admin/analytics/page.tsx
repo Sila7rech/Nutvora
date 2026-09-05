@@ -1,2 +1,2 @@
-import { DashboardView } from "@/components/admin-views";
-export default function AnalyticsPage() { return <><DashboardView /></>; }
+import { LiveAnalyticsView } from "@/components/admin-analytics-live";
+export default function AnalyticsPage() { return <LiveAnalyticsView />; }
