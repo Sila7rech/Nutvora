@@ -112,6 +112,21 @@ insert into public.categories (name, slug) values
   ('Custom Mixes', 'custom-mixes')
 on conflict (slug) do nothing;
 
+insert into public.products (category_id, name, slug, description, sku, price, stock, low_stock_threshold, weight_grams, image_url, status, featured, best_seller)
+select c.id, seed.name, seed.slug, seed.description, seed.sku, seed.price, seed.stock, seed.threshold, seed.weight_grams, seed.image_url, 'active', seed.featured, seed.best_seller
+from (values
+  ('Energy Mix', 'energy-mix-50g', 'Amande, cajou, noix et fruits séchés.', 'NVT-ENE-050', 12.90::numeric, 50, 10, 50, '/Grab&Go-50g.png', false, true),
+  ('Energy Mix', 'energy-mix-100g', 'Le mix qui accompagne vos journées.', 'NVT-ENE-100', 21.90::numeric, 35, 10, 100, '/Standard-100g.png', true, false),
+  ('Family Premium', 'family-premium-200g', 'Un généreux mélange à partager.', 'NVT-FAM-200', 36.90::numeric, 24, 8, 200, '/Family-Premium-200g.png', true, true)
+) as seed(name, slug, description, sku, price, stock, threshold, weight_grams, image_url, featured, best_seller)
+cross join public.categories c
+where c.slug = 'mixes'
+on conflict (slug) do nothing;
+
+insert into storage.buckets (id, name, public)
+values ('product-images', 'product-images', true)
+on conflict (id) do update set public = true;
+
 -- Existing storefront orders use lowercase statuses; admin actions use the
 -- normalized uppercase workflow while preserving the same column.
 alter table public.orders drop constraint if exists orders_status_check;
