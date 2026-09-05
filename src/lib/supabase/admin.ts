@@ -10,7 +10,7 @@ function getServiceClient(): SupabaseClient {
   return createClient(url, serviceKey, { auth: { autoRefreshToken: false, persistSession: false } });
 }
 
-export async function requireAdmin(): Promise<{ client: SupabaseClient; context: AdminContext }> {
+export async function requireAdmin(permission?: string): Promise<{ client: SupabaseClient; context: AdminContext }> {
   const userClient = await createUserClient();
   const { data: { user } } = await userClient.auth.getUser();
   if (!user) throw new Error("UNAUTHORIZED");
@@ -20,5 +20,6 @@ export async function requireAdmin(): Promise<{ client: SupabaseClient; context:
   const roleRecord = (Array.isArray(admin?.role) ? admin.role[0] : admin?.role) as unknown as { name?: string } | undefined;
   const roleValue = roleRecord?.name;
   if (roleValue !== "SUPER ADMIN" && roleValue !== "ADMIN" && roleValue !== "STAFF") throw new Error("FORBIDDEN");
+  if (permission && roleValue === "STAFF" && !["orders", "inventory"].includes(permission)) throw new Error("FORBIDDEN");
   return { client, context: { userId: user.id, email: user.email ?? "admin", role: roleValue } };
 }
