@@ -1,0 +1,3 @@
+import { NextResponse } from "next/server";
+import { requireAdmin } from "@/lib/supabase/admin";
+export async function GET() { try { const { client } = await requireAdmin("products"); const { data, error } = await client.from("categories").select("id,name,slug").order("sort_order").order("name"); if (error) throw error; return NextResponse.json({ categories: data ?? [] }); } catch (error) { const message = error instanceof Error ? error.message : "Unable to load categories."; return NextResponse.json({ error: message === "FORBIDDEN" ? "Admin access required" : "Unable to load categories." }, { status: message === "FORBIDDEN" ? 403 : 500 }); } }

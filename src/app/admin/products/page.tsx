@@ -1,2 +1,2 @@
-import { ProductsView } from "@/components/admin-views";
-export default function AdminProductsPage() { return <ProductsView />; }
+import { AdminProductsLive } from "@/components/admin-products-live";
+export default function AdminProductsPage() { return <AdminProductsLive />; }
