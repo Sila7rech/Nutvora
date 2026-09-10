@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { StoreProvider } from "@/components/store";
+import { PreferencesProvider } from "@/lib/i18n";
 
 export const metadata: Metadata = {
   title: "NUTVORA — Fruits Secs, Fruits Séchés & Boissons Naturelles",
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="fr" className="h-full antialiased" suppressHydrationWarning>
-      <body className="min-h-full flex flex-col" suppressHydrationWarning><StoreProvider>{children}</StoreProvider></body>
+      <body className="min-h-full flex flex-col" suppressHydrationWarning><PreferencesProvider><StoreProvider>{children}</StoreProvider></PreferencesProvider></body>
     </html>
   );
 }
