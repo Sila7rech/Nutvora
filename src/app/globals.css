@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&display=swap');
 @import "tailwindcss";
 
- .hero { aspect-ratio: 16 / 9; background: linear-gradient(90deg, rgba(10, 7, 5, .78) 0%, rgba(10, 7, 5, .45) 42%, rgba(10, 7, 5, .08) 75%), url('/banner-slider.png') center / cover no-repeat; display: flex; min-height: 0; padding: clamp(42px, 7vw, 105px) 9vw; position: relative; }
+ .hero { aspect-ratio: 16 / 9 !important; background: linear-gradient(90deg, rgba(10, 7, 5, .78) 0%, rgba(10, 7, 5, .45) 42%, rgba(10, 7, 5, .08) 75%), url('/banner-slider.png') center / cover no-repeat !important; display: flex !important; grid-template-columns: none !important; min-height: 0 !important; padding: clamp(42px, 7vw, 105px) 9vw; position: relative; }
  .hero-copy { color: #fff; max-width: 520px; padding: 0; position: relative; z-index: 1; }
  .hero-copy .eyebrow { color: #e0b76a; }
  .hero h1 { font-size: clamp(48px, 6vw, 86px); }
@@ -10,7 +10,7 @@
  .hero-benefits span { color: rgba(255, 250, 240, .86); }
  .hero .text-link { color: #fff; }
  .hero .button-dark { background: #fff; color: #1d1711; }
- .hero-visual { display: none; }
+ .hero-visual { display: none !important; }
  @media (max-width: 640px) { .hero { aspect-ratio: 4 / 5; background-position: 63% center; padding: 42px 7vw; }.hero-copy { align-self: end; }.hero h1 { font-size: 52px; }.hero-benefits { gap: 12px; } }
 
  .shop-tools { margin-bottom: 35px; }
