@@ -166,6 +166,15 @@ html[dir="rtl"] .favorite { left: 14px; right: auto; }
 html[dir="rtl"] .product-badge { left: auto; right: 14px; }
 html[dir="rtl"] .back-link svg, html[dir="rtl"] .text-link svg, html[dir="rtl"] .add-button svg { transform: scaleX(-1); }
 @media (max-width: 640px) { .preferences-menu { align-items: flex-start; flex-direction: column; gap: 10px; margin: 15px 0 0; }.nav .preferences-menu { max-width: 250px; }.language-trigger, .theme-toggle { min-height: 38px; }.language-dropdown { left: 0; right: auto; } }
+/* Keep intentionally dark brand surfaces dark in both color themes. */
+:root { --brand-dark: #171714; --brand-dark-soft: #282822; }
+.announcement, .mix-banner, footer { background: var(--brand-dark) !important; color: #fff; }
+.button-dark, .product-badge { background: var(--brand-dark) !important; color: #fff !important; }
+.hero .button-dark { background: #fff !important; color: var(--brand-dark) !important; }
+html[data-theme="dark"] .admin-frame { --admin-bg: #171715; --admin-panel: #24231f; --admin-line: #3e3a32; --admin-muted: #a49d90; background: var(--admin-bg); color: var(--ink); }
+html[data-theme="dark"] .admin-topbar, html[data-theme="dark"] .admin-panel, html[data-theme="dark"] .kpi-card, html[data-theme="dark"] .admin-modal, html[data-theme="dark"] .admin-notification-popover, html[data-theme="dark"] .product-form-grid input, html[data-theme="dark"] .product-form-grid select, html[data-theme="dark"] .product-form-grid textarea, html[data-theme="dark"] .admin-team-form input, html[data-theme="dark"] .admin-team-form select, html[data-theme="dark"] .team-row select { background: var(--admin-panel); color: var(--ink); }
+.hero { aspect-ratio: 16 / 9 !important; }
+@media (max-width: 640px) { .hero { aspect-ratio: 16 / 9 !important; min-height: 0 !important; padding: 24px 7vw !important; }.hero-copy { align-self: center; }.hero h1 { font-size: clamp(34px, 10vw, 48px); margin-bottom: 12px; }.hero-description { font-size: 11px; line-height: 1.45; max-width: 290px; }.hero-actions { gap: 10px; margin: 15px 0 20px; }.hero-actions .button { padding: 10px 13px; font-size: 9px; }.hero-benefits { gap: 8px; padding-top: 9px; }.hero-benefits span { font-size: 8px; gap: 4px; }.hero-benefits svg { height: 12px; width: 12px; } }
 /* Admin workspace */
 .admin-frame { --admin-bg: #f4f3ef; --admin-panel: #fff; --admin-line: #e7e4dd; --admin-muted: #85847d; background: var(--admin-bg); color: #242421; display: flex; min-height: 100vh; }
 .admin-sidebar { background: #1b1b19; color: #f7f5ef; display: flex; flex-direction: column; flex: 0 0 246px; min-height: 100vh; padding: 27px 16px 18px; position: sticky; top: 0; }
